@@ -1,0 +1,315 @@
+:root {
+  --bg: #0b1120;
+  --surface: #131c31;
+  --surface-2: #1b2740;
+  --line: #26324f;
+  --text: #e8eefc;
+  --muted: #93a1c4;
+  --green: #16a34a;
+  --green-hi: #22c55e;
+  --red: #ef4444;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: max(16px, env(safe-area-inset-top)) 16px
+    calc(24px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Header / date switcher */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+}
+.day-label {
+  font-size: 18px;
+  font-weight: 600;
+}
+.nav {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Daily total */
+.total {
+  background: linear-gradient(160deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px;
+  text-align: center;
+}
+.total-number {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--green-hi);
+  letter-spacing: -1px;
+}
+.total-label {
+  color: var(--muted);
+  margin-top: 6px;
+  font-size: 14px;
+}
+.macros {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.macros strong {
+  color: var(--text);
+}
+
+/* Composer */
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.entry-input {
+  display: flex;
+  gap: 8px;
+}
+.entry-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 16px;
+}
+.entry-input input::placeholder {
+  color: var(--muted);
+}
+.entry-input button {
+  padding: 0 18px;
+  border-radius: 14px;
+  border: none;
+  background: var(--green);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.entry-input button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.error {
+  margin: 0;
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+/* Estimate card */
+.estimate-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.estimate-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.estimate-food {
+  font-weight: 700;
+  font-size: 17px;
+}
+.estimate-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 2px;
+}
+.confidence {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.confidence.high {
+  background: rgba(34, 197, 94, 0.16);
+  color: var(--green-hi);
+}
+.confidence.medium {
+  background: rgba(234, 179, 8, 0.16);
+  color: #fde047;
+}
+.confidence.low {
+  background: rgba(148, 163, 184, 0.16);
+  color: var(--muted);
+}
+.cal-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cal-edit span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.cal-edit input {
+  font-size: 32px;
+  font-weight: 800;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text);
+  width: 100%;
+}
+.estimate-macros {
+  display: flex;
+  gap: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.assumptions {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+}
+.estimate-actions {
+  display: flex;
+  gap: 10px;
+}
+.estimate-actions button {
+  flex: 1;
+  padding: 13px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--line);
+}
+.estimate-actions .secondary {
+  background: transparent;
+  color: var(--muted);
+}
+.estimate-actions .primary {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+
+/* Entry list */
+.entry-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+.entry-main {
+  flex: 1;
+  min-width: 0;
+}
+.entry-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+.entry-desc {
+  color: var(--muted);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.entry-cal {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.delete {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.delete:hover {
+  color: var(--red);
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  padding: 20px 0;
+}
+.foot {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 8px;
+}
