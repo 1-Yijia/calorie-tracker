@@ -1,14 +1,23 @@
 # Calorie Tracker (PWA)
 
-An installable phone web app for tracking calories. Type what you ate in plain
-language ("two big spoons of oats") and Claude estimates the calories and macros.
-Each entry is saved and summed into a daily total. Your food log is stored locally
-on your device; only the food description is sent to the AI endpoint.
+An installable phone web app for tracking calories, modelled on Singapore's
+Healthy 365 meal log but powered by AI instead of a fixed food database.
+
+- **Time-slotted meals** — log food into Early Morning / Morning / Midday /
+  Afternoon / Evening / Night, not one flat list.
+- **Nutrient limits** — tracks Calories, Sugar, and Sodium against personal daily
+  targets computed from your goal + profile (Mifflin-St Jeor).
+- **AI estimation** — describe a food in plain language ("two big spoons of oats")
+  and Claude estimates per-unit Calories/Sugar/Sodium.
+- **Favourites cache** — every AI-estimated food is saved as a reusable item, so
+  repeat foods are logged from the cache with **zero API calls**. Star up to 25.
+- **Portion editing** — adjust the quantity; nutrition scales live.
+- **Daily summary** — timeline of the day's slots with per-item breakdown + delete.
 
 ## How it works
 
-- **Frontend:** Vite + React + TypeScript, installable as a PWA (offline-capable
-  except for the AI call).
+- **Frontend:** Vite + React + TypeScript + React Router, installable as a PWA
+  (offline-capable except for new AI estimates).
 - **Storage:** `localStorage` on your device — no accounts, no cloud database.
 - **AI:** a small serverless function at `/api/estimate` holds your Anthropic API
   key and calls Claude (`claude-haiku-4-5`). The key never reaches the phone.
