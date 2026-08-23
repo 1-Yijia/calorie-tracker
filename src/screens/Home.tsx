@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 import { NutrientCard } from "../components/NutrientCard";
 import { MealSlotRow } from "../components/MealSlotRow";
@@ -31,7 +31,8 @@ function prettyDate(dateKey: string): string {
 
 export default function Home() {
   const nav = useNavigate();
-  const [date, setDate] = useState(todayKey());
+  const [params] = useSearchParams();
+  const [date, setDate] = useState(params.get("date") ?? todayKey());
   const [limits, setLimits] = useState<Limits | null>(null);
   const [totals, setTotals] = useState<Nutrients>({
     calories: 0,
@@ -59,7 +60,18 @@ export default function Home() {
 
   return (
     <div className="screen">
-      <AppBar title="Meal Log" />
+      <AppBar
+        title="Meal Log"
+        right={
+          <button
+            className="iconbtn"
+            aria-label="Trends"
+            onClick={() => nav("/trends")}
+          >
+            📊
+          </button>
+        }
+      />
       <div className="content">
         <div className="datebar">
           <button

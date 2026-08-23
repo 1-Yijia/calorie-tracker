@@ -4,6 +4,7 @@ import Onboarding from "./screens/Onboarding";
 import Home from "./screens/Home";
 import LogSlot from "./screens/LogSlot";
 import Summary from "./screens/Summary";
+import Trends from "./screens/Trends";
 import EditLimits from "./screens/EditLimits";
 
 function RequireOnboard({ children }: { children: React.ReactNode }) {
@@ -36,6 +37,14 @@ export default function App() {
         element={
           <RequireOnboard>
             <Summary />
+          </RequireOnboard>
+        }
+      />
+      <Route
+        path="/trends"
+        element={
+          <RequireOnboard>
+            <Trends />
           </RequireOnboard>
         }
       />
