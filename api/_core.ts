@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import type Anthropic from "@anthropic-ai/sdk";
 
 export type Estimate = {
   foodName: string;
@@ -93,7 +93,8 @@ export async function estimateCalories(
       500,
     );
 
-  const client = new Anthropic({ apiKey });
+  const { default: AnthropicClient } = await import("@anthropic-ai/sdk");
+  const client = new AnthropicClient({ apiKey });
 
   const msg = await client.messages.create({
     model: MODEL,

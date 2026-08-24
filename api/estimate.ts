@@ -1,13 +1,15 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { estimateCalories, EstimateError } from "./_core";
 
 // Vercel Node serverless function: POST /api/estimate { description }
+// Imports are loaded lazily inside the handler so any module-load failure
+// surfaces as a readable JSON error instead of a generic crash.
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
     return;
   }
   try {
+    const { estimateCalories } = await import("./_core");
     const body =
       typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body ?? {});
     const result = await estimateCalories(
@@ -16,7 +18,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
     res.status(200).json(result);
   } catch (err) {
-    const status = err instanceof EstimateError ? err.status : 500;
-    res.status(status).json({ error: (err as Error).message });
+    const e = err as { status?: number; message?: string; name?: string };
+    const status = typeof e.status === "number" ? e.status : 500;
+    res.status(status).json({
+      error: e.message || String(err),
+      name: e.name,
+    });
   }
 }
