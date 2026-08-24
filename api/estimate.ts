@@ -1,4 +1,4 @@
-import { estimateCalories, EstimateError } from "./_core.ts";
+import { estimateCalories, EstimateError } from "./_core";
 
 // Vercel Node serverless function: POST /api/estimate { description }
 export default async function handler(req: Request): Promise<Response> {
