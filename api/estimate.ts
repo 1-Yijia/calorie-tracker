@@ -9,7 +9,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
   try {
-    const { estimateCalories } = await import("./_core");
+    const { estimateCalories } = await import("./_core.js");
     const body =
       typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body ?? {});
     const result = await estimateCalories(
