@@ -417,14 +417,16 @@ button {
   color: var(--brand-ink);
   margin-top: 2px;
 }
-.result .star {
+.star {
   border: none;
   background: transparent;
   font-size: 18px;
   cursor: pointer;
   color: var(--muted);
+  padding: 4px;
+  flex-shrink: 0;
 }
-.result .star.on {
+.star.on {
   color: #f5b301;
 }
 .result .add {

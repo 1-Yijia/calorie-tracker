@@ -277,6 +277,13 @@ export default function LogSlot() {
                   {logged.map((e) => (
                     <div className="card pending" key={e.id}>
                       <div className="phead">
+                        <button
+                          className={`star ${favIds.has(e.foodItemId) ? "on" : ""}`}
+                          aria-label="Favourite"
+                          onClick={() => star(e.foodItemId)}
+                        >
+                          {favIds.has(e.foodItemId) ? "★" : "☆"}
+                        </button>
                         <div className="info">
                           <div className="pname">{e.name}</div>
                           <div className="pmeta tnum">
