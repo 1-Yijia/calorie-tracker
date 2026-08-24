@@ -439,6 +439,26 @@ button {
   flex-shrink: 0;
 }
 
+.result .rowicon {
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  cursor: pointer;
+  color: var(--muted);
+  padding: 4px;
+  flex-shrink: 0;
+}
+.cal-inline {
+  width: 58px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 3px 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--surface-2);
+}
+
 .ai-row {
   display: flex;
   align-items: center;

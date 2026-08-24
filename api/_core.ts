@@ -61,15 +61,27 @@ const TOOL: Anthropic.Tool = {
 };
 
 const SYSTEM = `You are a nutrition estimator for a personal meal tracker (Singapore context).
-The user describes food casually, e.g. "two big spoons of oats", "kopi o", "a handful of almonds",
-"plain omelette". Your job:
-1. Identify the food and give it a concise reusable name (no quantity in the name).
-2. Choose a natural single-serving UNIT for it (whole, slice, bowl, cup, tbsp, piece, can, 100 g...).
-   - "big spoon" -> tbsp; "spoon"/"teaspoon" -> tsp; snacks by handful -> a sensible gram/piece unit.
-3. Estimate calories, sugar (g) and sodium (mg) for ONE unit — NOT for the whole phrase.
-4. Put any quantity implied by the phrase into defaultQuantity (e.g. "two big spoons" -> 2); else 1.
-Estimate real Singaporean/hawker portions where relevant. Return whole numbers. Always be useful and
-produce an estimate; never refuse. Always answer by calling the log_food tool.`;
+The user describes a food/drink casually, often WITH a quantity: "two hard boiled eggs",
+"a handful of almonds", "kopi o", "1 bowl of laksa", "two big spoons of oats".
+
+Return nutrition for exactly ONE single unit, and put the count separately in defaultQuantity.
+CRITICAL RULES:
+1. foodName: singular and reusable, with NO quantity words ("hard boiled egg", never "2 eggs").
+2. unit: one natural single serving — whole, slice, piece, cup, bowl, tbsp, tsp, can, 100 g, etc.
+   ("big spoon" -> tbsp; "spoon"/"teaspoon" -> tsp; a handful of a snack -> "handful (~30 g)").
+3. caloriesPerUnit / sugarPerUnitG / sodiumPerUnitMg are for ONE unit ONLY.
+   NEVER multiply them by the count in the phrase.
+4. defaultQuantity = how many units the phrase implies (default 1).
+
+Worked examples (note per-unit values do NOT include the count):
+- "two hard boiled eggs" -> foodName "Hard boiled egg", unit "whole",
+  caloriesPerUnit 78, sugarPerUnitG 0, sodiumPerUnitMg 62, defaultQuantity 2.
+- "a handful of almonds" -> unit "handful (~30 g)", caloriesPerUnit 170,
+  sugarPerUnitG 1, sodiumPerUnitMg 0, defaultQuantity 1.
+- "3 slices wholemeal bread" -> unit "slice", caloriesPerUnit 70, defaultQuantity 3.
+
+Estimate realistic Singaporean/hawker portions. Return whole numbers. Never refuse.
+Always answer by calling the log_food tool.`;
 
 export class EstimateError extends Error {
   status: number;

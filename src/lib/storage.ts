@@ -179,6 +179,14 @@ export function deleteEntry(id: string): void {
   writeLogs(readLogs().filter((e) => e.id !== id));
 }
 
+export function updateEntry(id: string, patch: Partial<LogEntry>): void {
+  writeLogs(readLogs().map((e) => (e.id === id ? { ...e, ...patch } : e)));
+}
+
+export function deleteFoodItem(id: string): void {
+  writeFoods(readFoods().filter((f) => f.id !== id));
+}
+
 /* ---------- totals ---------- */
 
 const ZERO: Nutrients = { calories: 0, sugarG: 0, sodiumMg: 0 };
