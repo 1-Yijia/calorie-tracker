@@ -36,6 +36,9 @@ export default function LogSlot() {
   const [tab, setTab] = useState<"slot" | "fav">("slot");
   const [query, setQuery] = useState("");
   const [pending, setPending] = useState<Pending[]>([]);
+  const [manualDraft, setManualDraft] = useState<{ name: string; calories: string } | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -126,6 +129,26 @@ export default function LogSlot() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function addManual() {
+    const q = query.trim();
+    if (!q) return;
+    setManualDraft({ name: q, calories: "" });
+  }
+  function confirmManual() {
+    if (!manualDraft) return;
+    const cals = Math.max(0, Math.round(Number(manualDraft.calories) || 0));
+    const item = addFoodItem({
+      name: manualDraft.name,
+      unit: "serving",
+      perUnit: { calories: cals, sugarG: 0, sodiumMg: 0 },
+      source: "manual",
+    });
+    addToPending(item);
+    setQuery("");
+    setManualDraft(null);
+    setTick((t) => t + 1);
   }
 
   /* ---- saved-entry actions ---- */
@@ -235,6 +258,12 @@ export default function LogSlot() {
         {searching ? (
           /* ---- SEARCH MODE: cache matches + AI estimate ---- */
           <>
+            {searching && (
+              <button className="ai-row manual-row" onClick={addManual}>
+                <span>✏️</span>
+                <span className="txt">Add “{query.trim()}” manually</span>
+              </button>
+            )}
             {showAiRow && (
               <button className="ai-row" onClick={runEstimate} disabled={loading}>
                 <span>✨</span>
@@ -410,6 +439,48 @@ export default function LogSlot() {
           <button className="btn primary block" onClick={save}>
             Save {pending.length} item{pending.length > 1 ? "s" : ""}
           </button>
+        </div>
+      )}
+
+      {manualDraft && (
+        <div className="overlay" onClick={() => setManualDraft(null)}>
+          <form
+            className="sheet"
+            onClick={(e) => e.stopPropagation()}
+            onSubmit={(e) => {
+              e.preventDefault();
+              confirmManual();
+            }}
+          >
+            <h3>Add “{manualDraft.name}”</h3>
+            <div className="field">
+              <label htmlFor="manual-cals">Calories per serving</label>
+              <input
+                id="manual-cals"
+                type="number"
+                inputMode="numeric"
+                min={0}
+                autoFocus
+                placeholder="e.g. 415"
+                value={manualDraft.calories}
+                onChange={(e) =>
+                  setManualDraft((d) => (d ? { ...d, calories: e.target.value } : d))
+                }
+              />
+            </div>
+            <div className="sheet-actions">
+              <button
+                type="button"
+                className="btn ghost block"
+                onClick={() => setManualDraft(null)}
+              >
+                Cancel
+              </button>
+              <button type="submit" className="btn primary block">
+                Add
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>
